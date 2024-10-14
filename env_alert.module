@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * 環境ごとにアラート変更.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function env_alert_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name == 'help.page.env_alert') {
+    $path = __DIR__ . '/README.txt';
+
+    if (file_exists($path)) {
+      return '<pre>' . file_get_contents($path) . '</pre>';
+    }
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function env_alert_page_attachments_alter(array &$attachments) {
+  if (\Drupal::routeMatch()->getRouteName() === 'help.page') {
+    $attachments['#attached']['library'][] = 'env_alert/env_alert.help_css';
+  }
+}

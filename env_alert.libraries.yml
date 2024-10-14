@@ -1,0 +1,4 @@
+env_alert.help_css:
+  css:
+    theme:
+      assets/css/env_alert_help.css: {}
