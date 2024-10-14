@@ -1,0 +1,5 @@
+name: "env_alert"
+type: module
+description: "環境ごとにアラートを表示します"
+package: Custom
+core_version_requirement: ^10
