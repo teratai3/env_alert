@@ -1,3 +1,7 @@
+env_alert.global_css:
+  css:
+    theme:
+      assets/css/env_alert.css: {}
 env_alert.help_css:
   css:
     theme:

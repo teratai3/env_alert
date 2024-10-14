@@ -5,7 +5,9 @@
  * 環境ごとにアラート変更.
  */
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Site\Settings;
 
 /**
  * Implements hook_help().
@@ -24,7 +26,29 @@ function env_alert_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_page_attachments_alter().
  */
 function env_alert_page_attachments_alter(array &$attachments) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 'env_alert/env_alert.global_css';
+  }
+
   if (\Drupal::routeMatch()->getRouteName() === 'help.page') {
     $attachments['#attached']['library'][] = 'env_alert/env_alert.help_css';
+  }
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function env_alert_page_top(&$page) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $env_alert_txt = Html::escape(Settings::get('env_alert_txt', '未設定の環境です。'));
+    $env_alert_bg = Html::escape(Settings::get('env_alert_bg', '#666'));
+    $page['env_alert_message'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['env-alert'],
+        'style' => "background-color:{$env_alert_bg};",
+      ],
+      '#markup' => $env_alert_txt,
+    ];
   }
 }
